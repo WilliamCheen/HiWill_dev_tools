@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 185f6993d5150494d98da50e26cb1c25, type: 3}
+  m_Name: AssetBundleCollectorSetting
+  m_EditorClassIdentifier: 
+  ShowPackageView: 1
+  ShowEditorAlias: 0
+  UniqueBundleName: 0
+  Packages:
+  - PackageName: DefaultPackage
+    PackageDesc: 
+    EnableAddressable: 1
+    SupportExtensionless: 1
+    LocationToLower: 0
+    IncludeAssetGUID: 0
+    AutoCollectShaders: 1
+    IgnoreRuleName: NormalIgnoreRule
+    Groups:
+    - GroupName: Code
+      GroupDesc: 
+      AssetTags: Code
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Res/Code
+        CollectorGUID: 9d5caf09b25161b4dafa9b0138fd5555
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+    - GroupName: Scene
+      GroupDesc: 
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Res/Scenes
+        CollectorGUID: b587859ecc082024288137ae2989f9cc
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectScene
+        AssetTags: 
+        UserData: 
+    - GroupName: Atlas
+      GroupDesc: 
+      AssetTags: Atlas
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Res/Atlas
+        CollectorGUID: d8390b1481b2f744eb1b0085ca04a648
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectSprite
+        AssetTags: 
+        UserData: 
+    - GroupName: UIPrefabs
+      GroupDesc: 
+      AssetTags: UIPrefabs
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Res/UIPrefabs
+        CollectorGUID: 718a8fc5654a88741898e30a86698a78
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 

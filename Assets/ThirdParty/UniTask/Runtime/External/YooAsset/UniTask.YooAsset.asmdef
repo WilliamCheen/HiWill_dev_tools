@@ -1,0 +1,23 @@
+{
+    "name": "UniTask.YooAsset",
+    "rootNamespace": "",
+    "references": [
+        "GUID:75e4ed62e22a0d248b898c42ea654015",
+        "GUID:e34a5702dd353724aa315fb8011f08c3"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "Select...",
+            "expression": "",
+            "define": "UNITASK_YOOASSET_SUPPORT"
+        }
+    ],
+    "noEngineReferences": false
+}
