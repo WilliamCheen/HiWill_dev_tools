@@ -45,15 +45,18 @@ public class VersionNewDownloader : MonoBehaviour
 
     private static (string, string) DefaultDownloadName(string url)
     {
-        string name = Path.GetFileName(url);
-        if (name.Contains("?")) name = name[..name.IndexOf('?')];
+        string name = "";
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+        name = Path.GetFileName(url);
+        if (name.Contains("?")) name = name[..name.IndexOf('?')];
         string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/Downloads";
         if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 #elif UNITY_ANDROID
         string path = $"{Application.persistentDataPath}";
 #elif UNITY_IOS
         string path = $"{Application.persistentDataPath}";
+#else
+        string path = Application.dataPath;
 #endif
         return (path, name);
     }

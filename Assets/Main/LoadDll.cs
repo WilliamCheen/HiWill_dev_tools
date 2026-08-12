@@ -147,8 +147,11 @@ public class LoadDll : MonoBehaviour
         foreach (var aotDllName in aotDllList)
         {
             AssetHandle raw = await YooAssetProxy.GetRawFileAsync2($"Code/{aotDllName}.bytes");
-            byte[] dllBytes = (raw.AssetObject as TextAsset).bytes;
-            LoadImageErrorCode err = RuntimeApi.LoadMetadataForAOTAssembly(dllBytes, HomologousImageMode.SuperSet);
+            if (raw.AssetObject is TextAsset textAsset)
+            {
+                byte[] dllBytes = textAsset.bytes;
+                LoadImageErrorCode err = RuntimeApi.LoadMetadataForAOTAssembly(dllBytes, HomologousImageMode.SuperSet);
+            }
         }
     }
 

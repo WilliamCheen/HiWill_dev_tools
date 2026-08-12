@@ -8,6 +8,7 @@ using AClockworkBerry;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Threading;
 #endif
 
 #if UNITY_STANDALONE_WIN
@@ -56,28 +57,51 @@ public static class Utils
         // ReSharper disable once StringLiteralTypo
         //string diskNum = RunCommand("wmic diskdrive get serialnumber");
 
-        var (boardNum, cpuNum, diskNum) = SystemMacAddressInfo.Numbers();
-        Debug.Log($"Current numbers, boardNum:{boardNum}, cpuNum:{cpuNum}, diskNum:{diskNum}");
-        
-        string[] numberList = { boardNum, cpuNum, diskNum };
-        var list = numberList.Where(IsValidSerialNumber).ToList();
-        string macAddress = string.Join("_", list);
-        bool isValidMacAddress = !string.IsNullOrEmpty(macAddress);
-        string address = isValidMacAddress ? macAddress : GetNetworkMacAddress();
-        _currentDevicePhysicalAddress = address;
-
-        // For Debug
-        if (isValidMacAddress)
+        try
         {
-            DeviceSerialNumberItem[] items =
+            // 获取 C++ dll 库里硬件信息，超时时间为 5s
+            // 正常情况下此函数调用在毫秒级别
+            var cts = new CancellationTokenSource();
+            cts.CancelAfter(TimeSpan.FromSeconds(5));
+
+            var hardwareNumbers = await UniTask.RunOnThreadPool(SystemMacAddressInfo.Numbers, cancellationToken: cts.Token)
+                .SuppressCancellationThrow();
+            if (hardwareNumbers.IsCanceled || hardwareNumbers.Result == default)
             {
-                new("主板", boardNum, true),
-                new("CPU", cpuNum, true),
-                new("硬盘", diskNum, true),
-            };
-            DebugNumberItems = items.Where(e => IsValidSerialNumber(e.number)).ToArray();    
+                Debug.LogWarning("[HardwareInfo] C++ 硬件查询超时或被取消，启动网络 MAC 降级方案");
+                _currentDevicePhysicalAddress = GetNetworkMacAddress();
+            }
+            else
+            {
+                var (boardNum, cpuNum, diskNum) = hardwareNumbers.Result;
+
+                string[] numberList = { boardNum, cpuNum, diskNum };
+                var list = numberList.Where(IsValidSerialNumber).ToList();
+                string macAddress = string.Join("_", list);
+                string address = !string.IsNullOrEmpty(macAddress) ? macAddress : GetNetworkMacAddress();
+                _currentDevicePhysicalAddress = address;
+                
+                // For Debug
+                DeviceSerialNumberItem[] items =
+                {
+                    new("主板", boardNum, true),
+                    new("CPU", cpuNum, true),
+                    new("硬盘", diskNum, true),
+                };
+                DebugNumberItems = items.Where(e => IsValidSerialNumber(e.number)).ToArray();
+                // End Debug
+            }
         }
-        // End Debug
+        catch (DllNotFoundException ex)
+        {
+            Debug.LogWarning($"[HardwareInfo] 缺失 C++ 运行库或 DLL 文件不存在: {ex.Message}");
+            _currentDevicePhysicalAddress = GetNetworkMacAddress();
+        }
+        catch (Exception ex)
+        {
+            Debug.Log($"[HardwareInfo] 获取硬件信息时发生非致命异常：{ex.Message}");
+            _currentDevicePhysicalAddress = GetNetworkMacAddress();
+        }
         
         return _currentDevicePhysicalAddress;
 #elif UNITY_STANDALONE_OSX || UNITY_STANDALONE_LINUX
@@ -133,44 +157,9 @@ public static class Utils
     }
 
     
-    /// <summary>
-    /// Windows 平台
-    /// </summary>
-    /// <param name="command"></param>
-    /// <returns></returns>
-    private static string RunCommand(string command)
-    {
-#if UNITY_STANDALONE_WIN
-        try
-        {
-            var psi = new ProcessStartInfo
-            {
-                FileName = "cmd.exe",
-                Arguments = "/C" + command,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                StandardOutputEncoding = Encoding.UTF8,
-            };
-            using var process = Process.Start(psi);
-            string output = process?.StandardOutput.ReadToEnd();
-            process?.WaitForExit();
 
-            if (string.IsNullOrEmpty(output)) return null;
-            var lines = output.Split("\n");
-            return lines.Length > 1 ? lines[1].Trim() : null;
-        }
-        catch (Exception e)
-        {
-            Debug.Log($"Exe command line error: {e.Message}");
-            return null;
-        }
-#else
-        return null;
-#endif
-    }
     
+#if UNITY_STANDALONE_WIN
     /// <summary>
     /// 是否是有效的串号
     /// </summary>
@@ -234,6 +223,7 @@ public static class Utils
 
         return isVirtualByName || isVirtualByVendor;
     }
+#endif
     
     public static void AddScreenLoggerListener(MonoBehaviour target)
     {

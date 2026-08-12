@@ -7,8 +7,6 @@
     <type fullname="System.CodeDom.Compiler.GeneratedCodeAttribute" preserve="all" />
     <type fullname="System.ComponentModel.EditorBrowsableAttribute" preserve="all" />
     <type fullname="System.ComponentModel.EditorBrowsableState" preserve="all" />
-    <type fullname="System.Diagnostics.Process" preserve="all" />
-    <type fullname="System.Diagnostics.ProcessStartInfo" preserve="all" />
     <type fullname="System.Net.NetworkInformation.NetworkInterface" preserve="all" />
     <type fullname="System.Net.NetworkInformation.NetworkInterfaceType" preserve="all" />
     <type fullname="System.Net.NetworkInformation.PhysicalAddress" preserve="all" />
@@ -106,11 +104,11 @@
     <type fullname="System.Diagnostics.DebuggableAttribute" preserve="all" />
     <type fullname="System.Diagnostics.DebuggableAttribute/DebuggingModes" preserve="all" />
     <type fullname="System.Diagnostics.DebuggerHiddenAttribute" preserve="all" />
+    <type fullname="System.DllNotFoundException" preserve="all" />
     <type fullname="System.Exception" preserve="all" />
+    <type fullname="System.Func`1" preserve="all" />
     <type fullname="System.Func`2" preserve="all" />
     <type fullname="System.IDisposable" preserve="all" />
-    <type fullname="System.IO.StreamReader" preserve="all" />
-    <type fullname="System.IO.TextReader" preserve="all" />
     <type fullname="System.IObservable`1" preserve="all" />
     <type fullname="System.Int32" preserve="all" />
     <type fullname="System.IntPtr" preserve="all" />
@@ -125,11 +123,11 @@
     <type fullname="System.Runtime.InteropServices.Marshal" preserve="all" />
     <type fullname="System.RuntimeFieldHandle" preserve="all" />
     <type fullname="System.String" preserve="all" />
-    <type fullname="System.StringSplitOptions" preserve="all" />
-    <type fullname="System.Text.Encoding" preserve="all" />
     <type fullname="System.Threading.CancellationToken" preserve="all" />
+    <type fullname="System.Threading.CancellationTokenSource" preserve="all" />
     <type fullname="System.TimeSpan" preserve="all" />
     <type fullname="System.Type" preserve="all" />
+    <type fullname="System.ValueTuple`2" preserve="all" />
     <type fullname="System.ValueTuple`3" preserve="all" />
     <type fullname="System.ValueType" preserve="all" />
   </assembly>

@@ -21,6 +21,7 @@ public class AppStartConfig
     public static AppStartConfig Current { get; private set; }
 
     //public const string MinIOPoint = "http://192.168.1.190:9000/release-unity/hot-update/hiwill-mac-address-tool";
+    // full path like: https://test-minio.labsonline.cn/release-unity/hot-update/hiwill-mac-address-tool/res-packages/windows/v1.0/
     public const string MinIOPoint = "https://test-minio.labsonline.cn/release-unity/hot-update/hiwill-mac-address-tool";
 
     /// <summary>

@@ -45,13 +45,13 @@ namespace Main.VersionChecker
 #endif
 
 #if UNITY_IOS || UNITY_ANDROID
-        public const string API_VersionCheck = "/config/hiwill_dev_tool_version.txt";
+        public const string API_VersionCheck = "/config/hiwill_dev_tool_version";
 #else
-        public const string API_VersionCheck = "/config/hiwill_dev_tool_version.txt";
+        public const string API_VersionCheck = "/config/hiwill_dev_tool_version";
 #endif
     }
 
-    public class AppVersionDataModel
+    public static class AppVersionDataModel
     {
         /// <summary>
         /// 检查版本更新
@@ -70,7 +70,8 @@ namespace Main.VersionChecker
 
             await HttpHelper.WhenNetworkReachable(cToken);
 
-            var resp = await HttpHelper.Request<AppVersionEntity>(AppVersionEntity.API_VersionCheck, "GET", parameters, cToken);
+            string api = $"{AppVersionEntity.API_VersionCheck}_{AppVersionEntity.Platform}.txt";
+            var resp = await HttpHelper.Request<AppVersionEntity>(api, "GET", parameters, cToken);
             if (resp != null && resp.IsSuccess && resp.data != null)
             {
                 var localVersion = new Version(AppVersionEntity.CurrentVersion);
